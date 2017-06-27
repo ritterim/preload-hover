@@ -1,7 +1,7 @@
 export default class PreloadHover {
   constructor(configuration = null) {
     const defaultConfiguration = {
-      defaultDomScope: document.body,
+      defaultDomScope: [document.body],
     };
 
     this.configuration = defaultConfiguration;
@@ -12,20 +12,24 @@ export default class PreloadHover {
   }
 
   start(domScope = this.configuration.defaultDomScope) {
-    if (!domScope) { throw new Error('domScope must be provided.'); }
+    if (!domScope) { throw new Error('domScope must be provided.'); } 
+    domScope = [...new Set(domScope)];
+    domScope.forEach(domScope => {
+      const head = document.getElementsByTagName('head')[0];
+      const links = [...domScope.getElementsByTagName('a')];
 
-    const head = document.getElementsByTagName('head')[0];
-    const links = [...domScope.getElementsByTagName('a')];
+      links.forEach(link => {
+        link.addEventListener('mouseover', () => {
+          const preload = document.createElement('link');
 
-    links.forEach(link => {
-      link.addEventListener('mouseover', () => {
-        const preload = document.createElement('link');
+          preload.setAttribute('rel', 'preload');
+          preload.setAttribute('href', link.href);
 
-        preload.setAttribute('rel', 'preload');
-        preload.setAttribute('href', link.href);
-
-        head.appendChild(preload);
+          head.appendChild(preload);
+          console.log(preload);
+        });
       });
-    });
+    })
+    
   }
 }
