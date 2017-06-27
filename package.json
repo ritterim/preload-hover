@@ -1,6 +1,6 @@
 {
   "name": "preload-hover",
-  "version": "1.0.0-alpha0",
+  "version": "1.0.0-alpha1",
   "license": "MIT",
   "description": "",
   "main": "lib/preload-hover.min.js",
@@ -45,5 +45,8 @@
     "style-loader": "^0.16.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
+  },
+  "dependencies": {
+    "lodash.uniqby": "^4.7.0"
   }
 }

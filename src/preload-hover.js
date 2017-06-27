@@ -1,7 +1,9 @@
+import uniqBy from 'lodash.uniqby';
+
 export default class PreloadHover {
   constructor(configuration = null) {
     const defaultConfiguration = {
-      defaultDomScope: document.body,
+      defaultDomScope: [document.body],
     };
 
     this.configuration = defaultConfiguration;
@@ -11,21 +13,26 @@ export default class PreloadHover {
     }
   }
 
-  start(domScope = this.configuration.defaultDomScope) {
-    if (!domScope) { throw new Error('domScope must be provided.'); }
-
+  start(domScopes = this.configuration.defaultDomScope) {
+    if (!domScopes) { throw new Error('domScope must be provided.'); } 
     const head = document.getElementsByTagName('head')[0];
-    const links = [...domScope.getElementsByTagName('a')];
 
-    links.forEach(link => {
-      link.addEventListener('mouseover', () => {
-        const preload = document.createElement('link');
+    domScopes.forEach(domScope => {
+      const links = [...domScope.getElementsByTagName('a')];
 
-        preload.setAttribute('rel', 'preload');
-        preload.setAttribute('href', link.href);
+      let uniqueLinks = uniqBy(links, 'href');
 
-        head.appendChild(preload);
+      uniqueLinks.forEach(link => {
+        link.addEventListener('mouseover', () => {
+          const preload = document.createElement('link');
+
+          preload.setAttribute('rel', 'preload');
+          preload.setAttribute('href', link.href);
+
+          head.appendChild(preload);
+        });
       });
-    });
+    })
+    
   }
 }

@@ -5,12 +5,23 @@
   </head>
   <body>
     <h1>Preload Hover Demo</h1>
-    <ul>
-      <li><a href="another-page.html">Another Page</a></li>
-      <li><a href="https://www.microsoft.com">Microsoft</a></li>
-    </ul>
+    <div id="one">
+      <ul>
+        <li><a href="another-page.html">Another Page</a></li>
+        <li><a href="https://www.microsoft.com">Microsoft</a></li>
+      </ul>
+    </div>
+
+    <div id="two">
+      <ul>
+        <li><a href="another-page.html">Another Page</a></li>
+        <li><a href="https://www.google.com">Google</a></li>
+        <li><a href="https://www.google.com">Google</a></li>
+      </ul>
+    </div>
+    
     <script>
-      new PreloadHover().start();
+      new PreloadHover({defaultDomScope: [document.querySelector('#one'), document.querySelector('#two')]}).start();
     </script>
   </body>
 </html>
