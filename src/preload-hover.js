@@ -31,7 +31,8 @@ export default class PreloadHover {
             preload.setAttribute('href', link.href);
 
             head.appendChild(preload);
-            }, 200);
+            console.log(preload);
+            }, 50);
         });
 
         link.addEventListener('mouseout', () => {
