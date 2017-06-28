@@ -12,8 +12,6 @@ it('should construct', () => {
 });
 
 it('should set expected link', () => {
-  const realSetTimeout = setTimeout;
-  const callback = jest.fn();
   const a = document.createElement('a');
   a.href = 'https://www.google.com';
   document.body.appendChild(a);

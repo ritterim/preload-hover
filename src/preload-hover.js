@@ -31,7 +31,6 @@ export default class PreloadHover {
             preload.setAttribute('href', link.href);
 
             head.appendChild(preload);
-            console.log(preload);
             }, 50);
         });
 
