@@ -27,7 +27,7 @@ it('should set expected link', () => {
   expect(preloadLinks[0].href).toBe('https://www.google.com/');
 });
 
-it('should create html link with href after 200 milliseconds', () => {
+it('should create html link with href after timeout', () => {
   const a = document.createElement('a');
   a.href = 'https://www.google.com';
   document.body.appendChild(a);
