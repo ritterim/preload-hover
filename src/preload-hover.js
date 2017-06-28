@@ -4,6 +4,7 @@ export default class PreloadHover {
   constructor(configuration = null) {
     const defaultConfiguration = {
       defaultDomScope: [document.body],
+      debounceTime: 50
     };
 
     this.configuration = defaultConfiguration;
@@ -14,7 +15,7 @@ export default class PreloadHover {
   }
 
   start(domScopes = this.configuration.defaultDomScope) {
-    if (!domScopes) { throw new Error('domScope must be provided.'); } 
+    if (!domScopes) { throw new Error('domScopes must be provided.'); }
     const head = document.getElementsByTagName('head')[0];
 
     domScopes.forEach(domScope => {
@@ -26,19 +27,18 @@ export default class PreloadHover {
         link.addEventListener('mouseover', () => {
           timer = setTimeout(() =>{
             const preload = document.createElement('link');
-            
+
             preload.setAttribute('rel', 'preload');
             preload.setAttribute('href', link.href);
 
             head.appendChild(preload);
-            }, 50);
+            }, this.debounceTime);
         });
 
         link.addEventListener('mouseout', () => {
           clearTimeout(timer);
         });
       });
-    })
-    
+    });
   }
 }

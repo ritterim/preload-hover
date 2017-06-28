@@ -32,13 +32,14 @@ new PreloadHover({
 
 | Option                | Description                                                               | Default Value |
 | --------------------- | ------------------------------------------------------------------------- | ------------- |
-| `defaultDomScope`     | The default DOM scope to use.                                             | `document.body` |
+| `defaultDomScope`     | The default DOM scopes to use.                                            | [`document.body`] |
+| `debounceTime`        | The time in milliseconds to wait before adding preload link.              | 50 |
 
 ## Methods
 
-### `start(domScope = this.configuration.defaultDomScope)`
+### `start(domScopes = this.configuration.defaultDomScope)`
 
-Activate preload on hover for `a` tags inside `domScope`.
+Activate preload on hover for `a` tags inside `domScopes`.
 
 ## Development
 
