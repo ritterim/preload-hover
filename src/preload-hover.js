@@ -19,17 +19,23 @@ export default class PreloadHover {
 
     domScopes.forEach(domScope => {
       const links = [...domScope.getElementsByTagName('a')];
-
+      let timer;
       let uniqueLinks = uniqBy(links, 'href');
 
       uniqueLinks.forEach(link => {
         link.addEventListener('mouseover', () => {
-          const preload = document.createElement('link');
+          timer = setTimeout(() =>{
+            const preload = document.createElement('link');
+            
+            preload.setAttribute('rel', 'preload');
+            preload.setAttribute('href', link.href);
 
-          preload.setAttribute('rel', 'preload');
-          preload.setAttribute('href', link.href);
+            head.appendChild(preload);
+            }, 50);
+        });
 
-          head.appendChild(preload);
+        link.addEventListener('mouseout', () => {
+          clearTimeout(timer);
         });
       });
     })

@@ -1,6 +1,8 @@
 import 'jest';
 import PreloadHover from '../src/preload-hover';
 
+jest.useFakeTimers();
+
 beforeEach(() => {
   document.body.innerHTML = '';
 });
@@ -18,13 +20,14 @@ it('should set expected link', () => {
 
   const mouseover = new MouseEvent('mouseover');
   a.dispatchEvent(mouseover);
+  jest.runTimersToTime(50);
   
   const preloadLinks = document.head.querySelectorAll('link');
   expect(preloadLinks.length).toBe(1);
   expect(preloadLinks[0].href).toBe('https://www.google.com/');
 });
 
-it('should create html link with href', () => {
+it('should create html link with href after timeout', () => {
   const a = document.createElement('a');
   a.href = 'https://www.google.com';
   document.body.appendChild(a);
