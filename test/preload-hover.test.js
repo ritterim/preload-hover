@@ -15,7 +15,7 @@ it('should set expected link', () => {
   document.body.appendChild(a);
 
   new PreloadHover({ defaultDomScope: [document.body]}).start();
-
+  
   const mouseover = new MouseEvent('mouseover');
   a.dispatchEvent(mouseover);
   
