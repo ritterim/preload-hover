@@ -32,7 +32,7 @@ export default class PreloadHover {
             preload.setAttribute('href', link.href);
 
             head.appendChild(preload);
-            }, this.debounceTime);
+            }, this.configuration.debounceTime);
         });
 
         link.addEventListener('mouseout', () => {
