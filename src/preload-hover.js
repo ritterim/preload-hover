@@ -5,7 +5,7 @@ export default class PreloadHover {
     const defaultConfiguration = {
       defaultDomScope: [document.body],
       debounceTime: 50,
-      linkType: ['local', 'external', 'both'], 
+      linkType: 'local', 
     };
 
     this.configuration = defaultConfiguration;
@@ -19,7 +19,7 @@ export default class PreloadHover {
 
   start(domScopes = this.configuration.defaultDomScope, domLinks = this.configuration.linkType) {
     if (!domScopes) { throw new Error('domScopes must be provided.'); }
-    if (!domLinks === 'local' || !domLinks === 'external') { throw new Error('linkType must be local, external or both.'); }
+    if (domLinks != 'local' && domLinks != 'external' && domLinks != 'both') { throw new Error('linkType must be local, external or both.'); }
     const head = document.getElementsByTagName('head')[0];
 
     domScopes.forEach(domScope => {
