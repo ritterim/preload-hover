@@ -42,3 +42,4 @@ it('should create html link with href after timeout', () => {
   const preloadLinks = document.head.querySelectorAll('link');
   expect(preloadLinks[0].outerHTML).toBe("<link rel=\"preload\" href=\"https://www.google.com/\">");
 });
+
