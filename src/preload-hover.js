@@ -4,8 +4,7 @@ export default class PreloadHover {
   constructor(configuration = null) {
     const defaultConfiguration = {
       defaultDomScope: [document.body],
-      debounceTime: 50,
-      linkType: true, 
+      debounceTime: 50
     };
 
     this.configuration = defaultConfiguration;
@@ -26,26 +25,14 @@ export default class PreloadHover {
 
       uniqueLinks.forEach(link => {
         link.addEventListener('mouseover', () => {
-          if(this.configuration.linkType === true) {
-            timer = setTimeout(() => {
-              const preload = document.createElement('link');
+          timer = setTimeout(() =>{
+            const preload = document.createElement('link');
 
-              preload.setAttribute('rel', 'preload');
-              preload.setAttribute('href', link.href);
-              head.appendChild(preload);
+            preload.setAttribute('rel', 'preload');
+            preload.setAttribute('href', link.href);
+
+            head.appendChild(preload);
             }, this.configuration.debounceTime);
-          } else {
-            if(link.hostname != window.location.hostname) {
-              timer = setTimeout(() => {
-                const preload = document.createElement('link');
-
-                preload.setAttribute('rel', 'preload');
-                preload.setAttribute('href', link.href);
-
-                head.appendChild(preload);
-              }, this.configuration.debounceTime);
-            }
-          }
         });
 
         link.addEventListener('mouseout', () => {
