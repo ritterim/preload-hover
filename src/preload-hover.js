@@ -26,26 +26,26 @@ export default class PreloadHover {
 
       uniqueLinks.forEach(link => {
         link.addEventListener('mouseover', () => {
-            if(this.configuration.linkType === true) {
+          if(this.configuration.linkType === true) {
+            timer = setTimeout(() => {
+              const preload = document.createElement('link');
+
+              preload.setAttribute('rel', 'preload');
+              preload.setAttribute('href', link.href);
+              head.appendChild(preload);
+            }, this.configuration.debounceTime);
+          } else {
+            if(link.hostname != window.location.hostname) {
               timer = setTimeout(() => {
                 const preload = document.createElement('link');
 
                 preload.setAttribute('rel', 'preload');
                 preload.setAttribute('href', link.href);
+
                 head.appendChild(preload);
               }, this.configuration.debounceTime);
-            } else {
-              if(link.hostname != window.location.hostname) {
-                timer = setTimeout(() => {
-                  const preload = document.createElement('link');
-
-                  preload.setAttribute('rel', 'preload');
-                  preload.setAttribute('href', link.href);
-
-                  head.appendChild(preload);
-                }, this.configuration.debounceTime);
-              }
             }
+          }
         });
 
         link.addEventListener('mouseout', () => {
