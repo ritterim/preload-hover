@@ -16,7 +16,7 @@ it('should set expected link', () => {
   a.href = 'https://www.google.com';
   document.body.appendChild(a);
 
-  const preload = new PreloadHover({ defaultDomScope: [document.body]});
+  const preload = new PreloadHover({ defaultDomScope: [document.body], linkType: 'external'});
 
   preload.start();
 

@@ -23,9 +23,8 @@ export default class PreloadHover {
     //create function
     function loadAttr(preload, linkHref) {
       preload.setAttribute('rel', 'preload');
-      preload.setAttribute('href', linkHref);
+      preload.setAttribute('href', linkHref.href);
       head.appendChild(preload);
-      return preload;
     }
 
     domScopes.forEach(domScope => {
