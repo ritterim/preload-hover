@@ -15,12 +15,18 @@ export default class PreloadHover {
     }
   }
 
-  //create function
-
   start(domScopes = this.configuration.defaultDomScope, domLinks = this.configuration.linkType) {
     if (!domScopes) { throw new Error('domScopes must be provided.'); }
     if (domLinks != 'local' && domLinks != 'external' && domLinks != 'both') { throw new Error('linkType must be local, external or both.'); }
     const head = document.getElementsByTagName('head')[0];
+
+    //create function
+    function loadAttr(preload, linkHref) {
+      preload.setAttribute('rel', 'preload');
+      preload.setAttribute('href', linkHref);
+      head.appendChild(preload);
+      return preload;
+    }
 
     domScopes.forEach(domScope => {
       const links = [...domScope.getElementsByTagName('a')];
@@ -33,31 +39,20 @@ export default class PreloadHover {
             if(link.hostname == window.location.hostname) {
               timer = setTimeout(() => {
                 const preload = document.createElement('link');
-
-                preload.setAttribute('rel', 'preload');
-                preload.setAttribute('href', link.href);
-                head.appendChild(preload);
+                loadAttr(preload, link);
               }, this.configuration.debounceTime);
             }
           } else if(domLinks === 'external') {
             if(link.hostname != window.location.hostname){
               timer = setTimeout(() => {
                 const preload = document.createElement('link');
-
-                preload.setAttribute('rel', 'preload');
-                preload.setAttribute('href', link.href);
-
-                head.appendChild(preload);
+                loadAttr(preload, link);
               }, this.configuration.debounceTime);
             }
           } else if(domLinks === 'both'){
             timer = setTimeout(() => {
               const preload = document.createElement('link');
-
-              preload.setAttribute('rel', 'preload');
-              preload.setAttribute('href', link.href);
-
-              head.appendChild(preload);
+              loadAttr(preload, link);
             }, this.configuration.debounceTime);
           }
         });
