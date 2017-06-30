@@ -34,6 +34,7 @@ new PreloadHover({
 | --------------------- | ------------------------------------------------------------------------- | ------------- |
 | `defaultDomScope`     | The default DOM scopes to use.                                            | [`document.body`] |
 | `debounceTime`        | The time in milliseconds to wait before adding preload link.              | 50 |
+| `linkType`            | The types of links to include. (`'local'`, `'external'`, `'both'`)        | `'local'` |
 
 ## Methods
 
