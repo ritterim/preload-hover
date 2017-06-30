@@ -5,7 +5,7 @@ export default class PreloadHover {
     const defaultConfiguration = {
       defaultDomScope: [document.body],
       debounceTime: 50,
-      linkType: true, 
+      linkType: 'local', 
     };
 
     this.configuration = defaultConfiguration;
@@ -15,9 +15,17 @@ export default class PreloadHover {
     }
   }
 
-  start(domScopes = this.configuration.defaultDomScope) {
+  start(domScopes = this.configuration.defaultDomScope, domLinks = this.configuration.linkType) {
     if (!domScopes) { throw new Error('domScopes must be provided.'); }
+    if (domLinks != 'local' && domLinks != 'external' && domLinks != 'both') { throw new Error('linkType must be local, external or both.'); }
     const head = document.getElementsByTagName('head')[0];
+
+    //create function
+    function loadAttr(preload, linkHref) {
+      preload.setAttribute('rel', 'preload');
+      preload.setAttribute('href', linkHref.href);
+      head.appendChild(preload);
+    }
 
     domScopes.forEach(domScope => {
       const links = [...domScope.getElementsByTagName('a')];
@@ -26,25 +34,25 @@ export default class PreloadHover {
 
       uniqueLinks.forEach(link => {
         link.addEventListener('mouseover', () => {
-          if(this.configuration.linkType === true) {
-            timer = setTimeout(() => {
-              const preload = document.createElement('link');
-
-              preload.setAttribute('rel', 'preload');
-              preload.setAttribute('href', link.href);
-              head.appendChild(preload);
-            }, this.configuration.debounceTime);
-          } else {
-            if(link.hostname != window.location.hostname) {
+          if(domLinks === 'local') {
+            if(link.hostname == window.location.hostname) {
               timer = setTimeout(() => {
                 const preload = document.createElement('link');
-
-                preload.setAttribute('rel', 'preload');
-                preload.setAttribute('href', link.href);
-
-                head.appendChild(preload);
+                loadAttr(preload, link);
               }, this.configuration.debounceTime);
             }
+          } else if(domLinks === 'external') {
+            if(link.hostname != window.location.hostname){
+              timer = setTimeout(() => {
+                const preload = document.createElement('link');
+                loadAttr(preload, link);
+              }, this.configuration.debounceTime);
+            }
+          } else if(domLinks === 'both'){
+            timer = setTimeout(() => {
+              const preload = document.createElement('link');
+              loadAttr(preload, link);
+            }, this.configuration.debounceTime);
           }
         });
 
@@ -53,5 +61,6 @@ export default class PreloadHover {
         });
       });
     });
+
   }
 }

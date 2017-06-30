@@ -16,7 +16,7 @@ it('should set expected link', () => {
   a.href = 'https://www.google.com';
   document.body.appendChild(a);
 
-  const preload = new PreloadHover({ defaultDomScope: [document.body]});
+  const preload = new PreloadHover({ defaultDomScope: [document.body], linkType: 'external'});
 
   preload.start();
 
@@ -42,3 +42,4 @@ it('should create html link with href after timeout', () => {
   const preloadLinks = document.head.querySelectorAll('link');
   expect(preloadLinks[0].outerHTML).toBe("<link rel=\"preload\" href=\"https://www.google.com/\">");
 });
+
