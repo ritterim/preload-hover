@@ -1,5 +1,3 @@
-import uniqBy from 'lodash.uniqby';
-
 export default class PreloadHover {
   constructor(configuration = null) {
     const defaultConfiguration = {
@@ -20,6 +18,15 @@ export default class PreloadHover {
     if (domLinks != 'local' && domLinks != 'external' && domLinks != 'both') { throw new Error('linkType must be local, external or both.'); }
     const head = document.getElementsByTagName('head')[0];
 
+    document.getElementById('add-link').addEventListener('click', () => {
+      const a = document.createElement('a');
+      const link = document.createTextNode('Facebook');
+      a.appendChild(link);
+      a.title = 'New Button';
+      a.href = 'https://www.facebook.com';
+      document.getElementById('one').appendChild(a);
+    });
+
     //create function
     const loadAttr = (preload, linkHref) => {
       preload.setAttribute('rel', 'preload');
@@ -30,7 +37,7 @@ export default class PreloadHover {
     domScopes.forEach(domScope => {
       const links = [...domScope.getElementsByTagName('a')];
       let timer;
-      let uniqueLinks = uniqBy(links, 'href');
+      console.log(domScope)
 
      domScope.addEventListener('mouseover', (e) => {
         if (e.target.tagName.toLowerCase() == 'a'){
@@ -52,6 +59,7 @@ export default class PreloadHover {
             timer = setTimeout(() => {
               const preload = document.createElement('link');
               loadAttr(preload, e.target);
+              console.log(preload);
             }, this.configuration.debounceTime);
           }
         }

@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1>Preload Hover Demo</h1>
-    <button onclick="linkButton()">Add Link</button>
+    <button id="add-link">Add Link</button>
     <div id="one">
       <ul>
         <li><a href="another-page.html">Another Page</a></li>
@@ -21,21 +21,12 @@
     </div>
     
     <script>
-      var linkButton = () => {
-        const a =document.createElement('a');
-        const link = document.createTextNode('Title');
-        a.appendChild(link);
-        a.title = 'New Button';
-        a.href = 'https://www.facebook.com';
-        document.getElementById('one').appendChild(a);
-
-      }
       new PreloadHover({
         defaultDomScope: 
           [
-            document.querySelector('#one'), 
-            document.querySelector('#two')
+            document.body
           ],
+        linkType: 'both'
         }).start();
     </script>
   </body>
