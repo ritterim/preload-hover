@@ -1,3 +1,5 @@
+import uniqBy from 'lodash.uniqby';
+
 export default class PreloadHover {
   constructor(configuration = null) {
     const defaultConfiguration = {
@@ -17,15 +19,8 @@ export default class PreloadHover {
     if (!domScopes) { throw new Error('domScopes must be provided.'); }
     if (domLinks != 'local' && domLinks != 'external' && domLinks != 'both') { throw new Error('linkType must be local, external or both.'); }
     const head = document.getElementsByTagName('head')[0];
-
-    document.getElementById('add-link').addEventListener('click', () => {
-      const a = document.createElement('a');
-      const link = document.createTextNode('Facebook');
-      a.appendChild(link);
-      a.title = 'New Button';
-      a.href = 'https://www.facebook.com';
-      document.getElementById('one').appendChild(a);
-    });
+    const links = document.getElementsByTagName('a');
+    let uniqueLinks = uniqBy(links, 'href');
 
     //create function
     const loadAttr = (preload, linkHref) => {
@@ -34,40 +29,48 @@ export default class PreloadHover {
       head.appendChild(preload);
     }
 
+    document.body.addEventListener('mouseover', (e) => {
+        const dynamicLink = e.target.href;
+        if(e.target.tagName.toLowerCase() == 'a') {
+          if(dynamicLink.indexOf(uniqueLinks)) {
+            const preload = document.createElement('link');
+            loadAttr(preload, e.target);
+          }
+        }
+      });
+
     domScopes.forEach(domScope => {
       const links = [...domScope.getElementsByTagName('a')];
       let timer;
-      console.log(domScope)
 
-     domScope.addEventListener('mouseover', (e) => {
-        if (e.target.tagName.toLowerCase() == 'a'){
+      uniqueLinks.forEach(link => {
+        link.addEventListener('mouseover', () => {
           if(domLinks === 'local') {
-            if(e.target.hostname == window.location.hostname) {
+            if(link.hostname == window.location.hostname) {
               timer = setTimeout(() => {
                 const preload = document.createElement('link');
-                loadAttr(preload, e.target);
+                loadAttr(preload, link);
               }, this.configuration.debounceTime);
             }
           } else if(domLinks === 'external') {
-            if(e.target.hostname != window.location.hostname){
+            if(link.hostname != window.location.hostname){
               timer = setTimeout(() => {
                 const preload = document.createElement('link');
-                loadAttr(preload, e.target);
+                loadAttr(preload, link);
               }, this.configuration.debounceTime);
             }
           } else if(domLinks === 'both'){
             timer = setTimeout(() => {
               const preload = document.createElement('link');
-              loadAttr(preload, e.target);
-              console.log(preload);
+              loadAttr(preload, link);
             }, this.configuration.debounceTime);
           }
-        }
-      });
+        });
 
-      domScope.addEventListener('mouseout', () => {
+        link.addEventListener('mouseout', () => {
           clearTimeout(timer);
         });
+      });
     });
 
   }
