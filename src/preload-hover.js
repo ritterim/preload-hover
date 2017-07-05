@@ -39,10 +39,8 @@ export default class PreloadHover {
         }
       });
 
-    domScopes.forEach(domScope => {
-      let timer;
-
       uniqueLinks.forEach(link => {
+        let timer;
         link.addEventListener('mouseover', () => {
           if(domLinks === 'local') {
             if(link.hostname == window.location.hostname) {
@@ -70,7 +68,6 @@ export default class PreloadHover {
           clearTimeout(timer);
         });
       });
-    });
 
   }
 }
