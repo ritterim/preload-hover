@@ -40,7 +40,6 @@ export default class PreloadHover {
       });
 
     domScopes.forEach(domScope => {
-      const links = [...domScope.getElementsByTagName('a')];
       let timer;
 
       uniqueLinks.forEach(link => {
