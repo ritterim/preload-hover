@@ -14,6 +14,7 @@ it('should construct', () => {
 it('should set expected link', () => {
   const a = document.createElement('a');
   a.href = 'https://www.google.com';
+  a.innerHTML = 'Google'
   document.body.appendChild(a);
 
   const preload = new PreloadHover({ defaultDomScope: [document.body], linkType: 'external'});

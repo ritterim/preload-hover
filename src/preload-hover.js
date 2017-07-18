@@ -19,20 +19,28 @@ export default class PreloadHover {
     if (!domScopes) { throw new Error('domScopes must be provided.'); }
     if (domLinks != 'local' && domLinks != 'external' && domLinks != 'both') { throw new Error('linkType must be local, external or both.'); }
     const head = document.getElementsByTagName('head')[0];
+    const links = document.getElementsByTagName('a');
+    let uniqueLinks = uniqBy(links, 'href');
 
     //create function
-    function loadAttr(preload, linkHref) {
+    const loadAttr = (preload, linkHref) => {
       preload.setAttribute('rel', 'preload');
       preload.setAttribute('href', linkHref.href);
       head.appendChild(preload);
     }
 
-    domScopes.forEach(domScope => {
-      const links = [...domScope.getElementsByTagName('a')];
-      let timer;
-      let uniqueLinks = uniqBy(links, 'href');
+    document.body.addEventListener('mouseover', (e) => {
+        const dynamicLink = e.target.href;
+        if(e.target.tagName.toLowerCase() == 'a') {
+          if(dynamicLink.indexOf(uniqueLinks)) {
+            const preload = document.createElement('link');
+            loadAttr(preload, e.target);
+          }
+        }
+      });
 
       uniqueLinks.forEach(link => {
+        let timer;
         link.addEventListener('mouseover', () => {
           if(domLinks === 'local') {
             if(link.hostname == window.location.hostname) {
@@ -60,7 +68,6 @@ export default class PreloadHover {
           clearTimeout(timer);
         });
       });
-    });
 
   }
 }
